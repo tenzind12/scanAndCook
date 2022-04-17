@@ -12,18 +12,25 @@ export default function Product({ products }) {
 
   // A D D   B U T T O N   H A N D L E R
   const saveItemHandler = () => {
-    const newCurrentProducts = [
-      ...currentProducts,
-      {
-        id: Date.now(),
-        name: products.product.product_name,
-        image: products.product.image_front_small_url,
-        rating: products.product.nutriscore_grade,
-      },
-    ];
-    setCurrentProducts(newCurrentProducts);
-    Vibration.vibrate(100);
-    alert('Item has been saved to your list');
+    // check if already saved
+    currentProducts.forEach((product) => {
+      if (product.name !== products.product.product_name) {
+        const newCurrentProducts = [
+          ...currentProducts,
+          {
+            id: Date.now(),
+            name: products.product.product_name,
+            image: products.product.image_front_small_url,
+            rating: products.product.nutriscore_grade,
+          },
+        ];
+        setCurrentProducts(newCurrentProducts);
+        Vibration.vibrate(100);
+        alert('Item has been saved to your list');
+      } else {
+        alert('This product is already saved');
+      }
+    });
   };
 
   // D E L E T E   B U T T O N   H A N D L E R

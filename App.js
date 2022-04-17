@@ -2,7 +2,6 @@ import { StyleSheet, Text, View, Button, Vibration } from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import React, { useState, useEffect, useContext } from 'react';
 import Product from './pages/Product';
-import { ProductContext } from './services/Context';
 
 export default function App() {
   const [hasPermission, setHasPermissioin] = useState(null);
@@ -10,9 +9,8 @@ export default function App() {
   const [products, setProducts] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
 
-  const [swapPage, setSwapPage] = useState(false);
+  // const [swapPage, setSwapPage] = useState(false);
   // context API
-  const productContext = useContext(ProductContext);
 
   useEffect(() => {
     (async () => {
@@ -46,11 +44,7 @@ export default function App() {
       {/* if the product is not found */}
       {errorMessage && <Text style={styles.noProduct}>{errorMessage}</Text>}
 
-      {scanned && !errorMessage && (
-        <ProductContext.Provider value={{ swapPage, setSwapPage }}>
-          <Product products={products} />
-        </ProductContext.Provider>
-      )}
+      {scanned && !errorMessage && <Product products={products} />}
 
       <View style={styles.button}>
         <Button
