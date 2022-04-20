@@ -4,18 +4,15 @@ import React, { useState, useEffect, useContext } from 'react';
 import Product from './pages/Product';
 
 export default function App() {
-  const [hasPermission, setHasPermissioin] = useState(null);
+  const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
   const [products, setProducts] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
 
-  // const [swapPage, setSwapPage] = useState(false);
-  // context API
-
   useEffect(() => {
     (async () => {
       const { status } = await BarCodeScanner.requestPermissionsAsync();
-      setHasPermissioin(status === 'granted');
+      setHasPermission(status === 'granted');
     })();
   }, []);
 
@@ -27,6 +24,22 @@ export default function App() {
     responseBody.status === 0
       ? setErrorMessage("We don't rate this type of product")
       : setProducts(responseBody);
+
+    // following code to fetch recipes
+    const productKeywords = responseBody.product._keywords.filter((word) => word !== 'and'); // not only 'and' but ['vegetable', 'and', 'fresh'] find a way to remove these words from productKeywords
+    console.log(productKeywords);
+    const recipeResponse = await fetch(
+      `https://734a-82-121-4-45.eu.ngrok.io/recipe-php/api/v1/index.php?request=products`
+    );
+    const recipeResBody = await recipeResponse.json();
+
+    // const recipeFound = recipeResBody.data.map((recipe) => {
+    //   for (let i = 0; i < productKeywords.length; i++) {
+    //     if (recipe.recipeIngredient.includes(productKeywords[i])) {
+    //       // console.log(recipe);
+    //     }
+    //   }
+    // });
   };
 
   if (hasPermission === null) return <Text>Requesting for camera permission</Text>;
