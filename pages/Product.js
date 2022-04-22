@@ -5,10 +5,13 @@ import Nutriments from '../components/Nutriments';
 import Nutriscore from '../components/Nutriscore';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import SavedProducts from './SavedProducts';
+import RecipeList from './RecipeList';
 
-export default function Product({ products }) {
+export default function Product({ products, recipes }) {
   const [currentProducts, setCurrentProducts] = useState([]);
   const [pageChange, setPageChange] = useState(true);
+
+  const [showRecipePage, setShowRecipePage] = useState(false);
 
   // A D D   B U T T O N   H A N D L E R
   const saveItemHandler = () => {
@@ -75,22 +78,42 @@ export default function Product({ products }) {
             <Nutriscore nutriscore_grade={products.product.nutriscore_grade} />
           )}
 
-          {/* nutrition scores component*/}
-          <Nutriments nutriments={products.product.nutriments} />
-          <View style={styles.buttonContainer}>
-            <TouchableOpacity
-              style={styles.listBtn}
-              onPress={() => {
-                setPageChange(false);
-                Vibration.vibrate(50);
-              }}
-            >
-              <Text>Your Items</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.saveBtn} onPress={saveItemHandler}>
-              <Text>Save item</Text>
-            </TouchableOpacity>
-          </View>
+          {/* ============== link button for viewing recipe results ============ */}
+          <TouchableOpacity
+            onPress={() => {
+              setShowRecipePage(!showRecipePage);
+              Vibration.vibrate(50);
+            }}
+          >
+            <Text style={styles.recipeButton}>
+              {' '}
+              {showRecipePage ? 'Go back' : recipes.length + ' possible recipes'}
+            </Text>
+          </TouchableOpacity>
+
+          {showRecipePage && <RecipeList recipes={recipes} />}
+
+          {/* show nutrivalue and three buttons if recipes are hidden */}
+          {!showRecipePage && (
+            <>
+              {/* nutrition scores component*/}
+              <Nutriments nutriments={products.product.nutriments} />
+              <View style={styles.buttonContainer}>
+                <TouchableOpacity
+                  style={styles.listBtn}
+                  onPress={() => {
+                    setPageChange(false);
+                    Vibration.vibrate(50);
+                  }}
+                >
+                  <Text>Your Items</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.saveBtn} onPress={saveItemHandler}>
+                  <Text>Save item</Text>
+                </TouchableOpacity>
+              </View>
+            </>
+          )}
         </View>
       )
     );
@@ -145,5 +168,14 @@ const styles = StyleSheet.create({
     padding: 5,
     borderRadius: 7,
     marginLeft: 10,
+  },
+  recipeButton: {
+    color: 'white',
+    borderColor: 'skyblue',
+    borderWidth: 1,
+    padding: 5,
+    backgroundColor: 'gold',
+    borderRadius: 50,
+    marginTop: 5,
   },
 });

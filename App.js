@@ -9,6 +9,8 @@ export default function App() {
   const [products, setProducts] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
 
+  const [possibleRecipes, setPossibleRecipes] = useState([]);
+
   useEffect(() => {
     (async () => {
       const { status } = await BarCodeScanner.requestPermissionsAsync();
@@ -25,22 +27,45 @@ export default function App() {
       ? setErrorMessage("We don't rate this type of product")
       : setProducts(responseBody);
 
-    // following code to fetch recipes
-    const productKeywords = responseBody.product._keywords.filter((word) => word !== 'and'); // not only 'and' but ['vegetable', 'and', 'fresh'] find a way to remove these words from productKeywords
-    console.log(productKeywords);
-    const recipeResponse = await fetch(
-      `https://734a-82-121-4-45.eu.ngrok.io/recipe-php/api/v1/index.php?request=products`
-    );
-    const recipeResBody = await recipeResponse.json();
+    /** ================================================================= **
+     * FOLLOWING CODES TO FETCH POSSIBLE RECIPES FROM (recipe-php site) *
+     */ //=============================================================== //
+    if (responseBody.status) {
+      const filterArray = [
+        'and',
+        'vegetable',
+        'fresh',
+        'food',
+        'marketplace',
+        'their',
+        'product',
+        'paste',
+      ]; // some keywords to exclude (filter)
+      const productKeywords = responseBody.product._keywords.filter(
+        (word) => filterArray.indexOf(word) == -1
+      );
+      // console.log(productKeywords);
 
-    // const recipeFound = recipeResBody.data.map((recipe) => {
-    //   for (let i = 0; i < productKeywords.length; i++) {
-    //     if (recipe.recipeIngredient.includes(productKeywords[i])) {
-    //       // console.log(recipe);
-    //     }
-    //   }
-    // });
+      // fetch all the recipes from the site
+      const recipeResponse = await fetch(
+        `https://128e-82-121-4-45.eu.ngrok.io/recipe-php/api/v1/index.php?request=products`
+      );
+      const recipeResBody = await recipeResponse.json();
+
+      // extract recipes found by matching keywords from scanApp and ingredients in recipe fetched
+      const recipesResults = [];
+      recipeResBody.data.map((recipe) => {
+        for (let i = 0; i < productKeywords.length; i++) {
+          if (recipe.recipeIngredient.includes(productKeywords[i])) {
+            recipesResults.push(recipe.name);
+          }
+        }
+      });
+      const uniqueResult = new Set(recipesResults); //remove duplicate results
+      setPossibleRecipes(Array.from(uniqueResult));
+    }
   };
+  // console.log(possibleRecipes);
 
   if (hasPermission === null) return <Text>Requesting for camera permission</Text>;
   if (hasPermission === false) return <Text>No permission</Text>;
@@ -57,7 +82,7 @@ export default function App() {
       {/* if the product is not found */}
       {errorMessage && <Text style={styles.noProduct}>{errorMessage}</Text>}
 
-      {scanned && !errorMessage && <Product products={products} />}
+      {scanned && !errorMessage && <Product products={products} recipes={possibleRecipes} />}
 
       <View style={styles.button}>
         <Button
