@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View, Button, Vibration } from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import Product from './pages/Product';
 
 export default function App() {
@@ -21,48 +21,46 @@ export default function App() {
   const handleBarCodeScanned = async ({ type, data }) => {
     setScanned(true);
     // console.log(`https://world.openfoodfacts.org/api/v0/product/${data}.json`);
-    const response = await fetch(`https://world.openfoodfacts.org/api/v0/product/${data}.json`);
-    const responseBody = await response.json();
-    responseBody.status === 0
-      ? setErrorMessage("We don't rate this type of product")
-      : setProducts(responseBody);
 
-    /** ================================================================= **
-     * FOLLOWING CODES TO FETCH POSSIBLE RECIPES FROM (recipe-php site) *
-     */ //=============================================================== //
-    if (responseBody.status) {
-      const filterArray = [
-        'and',
-        'vegetable',
-        'fresh',
-        'food',
-        'marketplace',
-        'their',
-        'product',
-        'paste',
-      ]; // some keywords to exclude (filter)
-      const productKeywords = responseBody.product._keywords.filter(
-        (word) => filterArray.indexOf(word) == -1
-      );
-      // console.log(productKeywords);
+    try {
+      const response = await fetch(`https://world.openfoodfacts.org/api/v0/product/${data}.json`);
+      const responseBody = await response.json();
+      responseBody.status === 0
+        ? setErrorMessage("We don't rate this type of product")
+        : setProducts(responseBody);
 
-      // fetch all the recipes from the site
-      const recipeResponse = await fetch(
-        `https://128e-82-121-4-45.eu.ngrok.io/recipe-php/api/v1/index.php?request=products`
-      );
-      const recipeResBody = await recipeResponse.json();
+      /** ================================================================= **
+       * FOLLOWING CODES TO FETCH POSSIBLE RECIPES FROM (recipe-php site) *
+       */ //=============================================================== //
+      if (responseBody.status) {
+        // prettier-ignore
+        const filterArray = ['and','vegetable','fresh','food','marketplace','their','product','paste',]; // some keywords to exclude (filter)
+        const productKeywords = responseBody.product._keywords.filter(
+          (word) => filterArray.indexOf(word) == -1
+        );
+        // console.log(productKeywords);
 
-      // extract recipes found by matching keywords from scanApp and ingredients in recipe fetched
-      const recipesResults = [];
-      recipeResBody.data.map((recipe) => {
-        for (let i = 0; i < productKeywords.length; i++) {
-          if (recipe.recipeIngredient.includes(productKeywords[i])) {
-            recipesResults.push(recipe.name);
+        // fetch all the recipes from the site
+
+        const recipeResponse = await fetch(
+          `https://128e-82-121-4-45.eu.ngrok.io/recipe-php/api/v1/index.php?request=products`
+        );
+        const recipeResBody = await recipeResponse.json();
+
+        // extract recipes found by matching keywords from scanApp and ingredients in recipe fetched
+        const recipesResults = [];
+        recipeResBody.data.map((recipe) => {
+          for (let i = 0; i < productKeywords.length; i++) {
+            if (recipe.recipeIngredient.includes(productKeywords[i])) {
+              recipesResults.push(recipe.name);
+            }
           }
-        }
-      });
-      const uniqueResult = new Set(recipesResults); //remove duplicate results
-      setPossibleRecipes(Array.from(uniqueResult));
+        });
+        const uniqueResult = new Set(recipesResults); //remove duplicate results
+        setPossibleRecipes(Array.from(uniqueResult));
+      }
+    } catch (e) {
+      console.log(e.message);
     }
   };
   // console.log(possibleRecipes);
