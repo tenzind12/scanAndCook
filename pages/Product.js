@@ -210,5 +210,6 @@ const styles = StyleSheet.create({
   },
   recipeButtonContainer: {
     flexDirection: 'row',
+    marginBottom: 5,
   },
 });
