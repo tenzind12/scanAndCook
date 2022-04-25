@@ -103,11 +103,6 @@ export default function App() {
     }
   };
 
-  // save the recipe ingredients in localstorage
-  // useEffect(() => {
-  //   AsyncStorage.setItem('recipes', JSON.stringify(recipeIngredient));
-  // }, [recipeIngredient]);
-
   if (hasPermission === null) return <Text>Requesting for camera permission</Text>;
   if (hasPermission === false) return <Text>No permission</Text>;
 

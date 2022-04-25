@@ -15,28 +15,27 @@ export default function Product({ products, recipes, setRecipeIngredient, setPos
 
   // A D D   B U T T O N   H A N D L E R
   const saveItemHandler = () => {
-    // check if already saved (****BUG ALERT - not saving new items when empty storage*****)
-    currentProducts.forEach((product) => {
-      if (product.name !== products.product.product_name) {
-        const newCurrentProducts = [
-          ...currentProducts,
-          {
-            id: Date.now(),
-            name: products.product.product_name,
-            image: products.product.image_front_small_url,
-            rating: products.product.nutriscore_grade,
-          },
-        ];
-
-        // console.log(newCurrentProducts.length);
-        setCurrentProducts(newCurrentProducts);
-        // console.log(newCurrentProducts);
-        Vibration.vibrate(100);
-        alert('Item has been saved to your list');
-      } else {
-        alert('This product is already saved');
-      }
-    });
+    // check if already saved
+    if (currentProducts.length > 0) {
+      currentProducts.forEach((product) => {
+        if (product.name === products.product.product_name) {
+          alert('This product is already saved');
+        }
+      });
+    } else {
+      const newCurrentProducts = [
+        ...currentProducts,
+        {
+          id: Date.now(),
+          name: products.product.product_name,
+          image: products.product.image_front_small_url,
+          rating: products.product.nutriscore_grade,
+        },
+      ];
+      setCurrentProducts(newCurrentProducts);
+      alert('Item has been saved to your list');
+    }
+    Vibration.vibrate(100);
   };
 
   // D E L E T E   B U T T O N   H A N D L E R
