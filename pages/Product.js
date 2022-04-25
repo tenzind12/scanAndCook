@@ -1,4 +1,4 @@
-import { View, Text, Image, StyleSheet, TouchableOpacity, Vibration, Button } from 'react-native';
+import { View, Text, Image, StyleSheet, TouchableOpacity, Vibration } from 'react-native';
 import { useState, useEffect } from 'react';
 // import { saveAlert } from '../services/Service';
 import Nutriments from '../components/Nutriments';
@@ -7,7 +7,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import SavedProducts from './SavedProducts';
 import RecipeList from './RecipeList';
 
-export default function Product({ products, recipes }) {
+export default function Product({ products, recipes, setRecipeIngredient, setPossibleRecipes }) {
   const [currentProducts, setCurrentProducts] = useState([]);
   const [pageChange, setPageChange] = useState(true);
 
@@ -103,6 +103,8 @@ export default function Product({ products, recipes }) {
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => {
+                setRecipeIngredient([]);
+                setPossibleRecipes([]);
                 Vibration.vibrate(50);
               }}
             >

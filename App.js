@@ -45,7 +45,7 @@ export default function App() {
         // F I R S T   T I M E    S C A N N I N G
         if (recipeIngredient.length <= 0) {
           const recipeResponse = await fetch(
-            `https://36cb-82-121-4-45.eu.ngrok.io/recipe-php/api/v1/index.php?request=products`
+            `https://4e3e-82-121-4-45.eu.ngrok.io/recipe-php/api/v1/index.php?request=products`
           );
           const recipeResBody = await recipeResponse.json();
 
@@ -123,7 +123,14 @@ export default function App() {
       {/* if the product is not found */}
       {errorMessage && <Text style={styles.noProduct}>{errorMessage}</Text>}
 
-      {scanned && !errorMessage && <Product products={products} recipes={possibleRecipes} />}
+      {scanned && !errorMessage && (
+        <Product
+          products={products}
+          recipes={possibleRecipes}
+          setRecipeIngredient={setRecipeIngredient}
+          setPossibleRecipes={setPossibleRecipes}
+        />
+      )}
 
       <View style={styles.button}>
         <Button
