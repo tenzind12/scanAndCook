@@ -10,6 +10,7 @@ export default function App() {
   const [errorMessage, setErrorMessage] = useState(null);
 
   const [possibleRecipes, setPossibleRecipes] = useState([]);
+  const [recipeIngredient, setRecipeIngredient] = useState([]);
 
   useEffect(() => {
     (async () => {
@@ -38,32 +39,72 @@ export default function App() {
         const productKeywords = responseBody.product._keywords.filter(
           (word) => filterArray.indexOf(word) == -1
         );
-        // console.log(productKeywords);
 
-        // fetch all the recipes from the site
+        // F I R S T   T I M E    S C A N N I N G
+        if (recipeIngredient.length <= 0) {
+          const recipeResponse = await fetch(
+            `https://36cb-82-121-4-45.eu.ngrok.io/recipe-php/api/v1/index.php?request=products`
+          );
+          const recipeResBody = await recipeResponse.json();
 
-        const recipeResponse = await fetch(
-          `https://128e-82-121-4-45.eu.ngrok.io/recipe-php/api/v1/index.php?request=products`
-        );
-        const recipeResBody = await recipeResponse.json();
-
-        // extract recipes found by matching keywords from scanApp and ingredients in recipe fetched
-        const recipesResults = [];
-        recipeResBody.data.map((recipe) => {
-          for (let i = 0; i < productKeywords.length; i++) {
-            if (recipe.recipeIngredient.includes(productKeywords[i])) {
-              recipesResults.push(recipe.name);
+          // extract recipes found by matching keywords from scanApp and ingredients in recipe fetched
+          const recipesResults = [];
+          recipeResBody.data.map((recipe) => {
+            for (let i = 0; i < productKeywords.length; i++) {
+              if (recipe.recipeIngredient.includes(productKeywords[i])) {
+                const recipeObject = {};
+                recipeObject['01'] = recipe.name;
+                recipeObject['02'] = recipe.recipeIngredient;
+                recipesResults.push(recipeObject);
+              }
             }
-          }
-        });
-        const uniqueResult = new Set(recipesResults); //remove duplicate results
-        setPossibleRecipes(Array.from(uniqueResult));
+          });
+
+          // SENDING unique RECIPES NAMES TO RECIPELIST.JSX
+          const name = [];
+          // const ingredients = [];
+          recipesResults.forEach((recipeObj) => {
+            name.push(recipeObj['01']);
+            const uniqueRecipeName = new Set(name);
+            setPossibleRecipes(Array.from(uniqueRecipeName));
+          });
+          setRecipeIngredient([recipesResults]);
+        } else {
+          // S E C O N D   T I M E    S C A N N I N G
+          // console.log(recipeIngredient);
+          const recipesResults = [];
+          recipeIngredient[0].map((recipe) => {
+            for (let i = 0; i < productKeywords.length; i++) {
+              if (recipe['02'].includes(productKeywords[i])) {
+                // return recipe['01'];
+                const recipeObj = {};
+                recipeObj['01'] = recipe['01'];
+                recipeObj['02'] = recipe['02'];
+                recipesResults.push(recipeObj);
+              }
+            }
+          });
+
+          // SENDING unique RECIPES NAMES TO RECIPELIST.JSX
+          const name = [];
+          // const ingredients = [];
+          recipesResults.forEach((recipeObj) => {
+            name.push(recipeObj['01']);
+            const uniqueRecipeName = new Set(name);
+            setPossibleRecipes(Array.from(uniqueRecipeName));
+          });
+          setRecipeIngredient([recipesResults]);
+        }
       }
     } catch (e) {
       console.log(e.message);
     }
   };
-  // console.log(possibleRecipes);
+
+  // save the recipe ingredients in localstorage
+  // useEffect(() => {
+  //   AsyncStorage.setItem('recipes', JSON.stringify(recipeIngredient));
+  // }, [recipeIngredient]);
 
   if (hasPermission === null) return <Text>Requesting for camera permission</Text>;
   if (hasPermission === false) return <Text>No permission</Text>;

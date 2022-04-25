@@ -5,18 +5,18 @@ export default function RecipeList({ recipes }) {
   return (
     <FlatList
       data={recipes}
-      renderItem={({ item }) => (
+      renderItem={({ item, index }) => (
         <Text
           onPress={() =>
             Linking.openURL(
-              `https://128e-82-121-4-45.eu.ngrok.io/recipe-php/recipeLists.php?ingredient=${item}&submit=Submit`
+              `https://36cb-82-121-4-45.eu.ngrok.io/recipe-php/recipeLists.php?ingredient=${item}&submit=Submit`
             )
           }
         >
           {item}
         </Text>
       )}
-      keyExtractor={(item) => item}
+      keyExtractor={(item, index) => index}
     ></FlatList>
   );
 }

@@ -15,7 +15,7 @@ export default function Product({ products, recipes }) {
 
   // A D D   B U T T O N   H A N D L E R
   const saveItemHandler = () => {
-    // check if already saved
+    // check if already saved (****BUG ALERT - not saving new items when empty storage*****)
     currentProducts.forEach((product) => {
       if (product.name !== products.product.product_name) {
         const newCurrentProducts = [
@@ -27,7 +27,10 @@ export default function Product({ products, recipes }) {
             rating: products.product.nutriscore_grade,
           },
         ];
+
+        // console.log(newCurrentProducts.length);
         setCurrentProducts(newCurrentProducts);
+        // console.log(newCurrentProducts);
         Vibration.vibrate(100);
         alert('Item has been saved to your list');
       } else {
