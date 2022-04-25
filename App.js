@@ -30,6 +30,8 @@ export default function App() {
         ? setErrorMessage("We don't rate this type of product")
         : setProducts(responseBody);
 
+      console.log(responseBody.product.image_front_small_url);
+
       /** ================================================================= **
        * FOLLOWING CODES TO FETCH POSSIBLE RECIPES FROM (recipe-php site) *
        */ //=============================================================== //

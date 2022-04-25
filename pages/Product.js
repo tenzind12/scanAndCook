@@ -1,4 +1,4 @@
-import { View, Text, Image, StyleSheet, TouchableOpacity, Vibration } from 'react-native';
+import { View, Text, Image, StyleSheet, TouchableOpacity, Vibration, Button } from 'react-native';
 import { useState, useEffect } from 'react';
 // import { saveAlert } from '../services/Service';
 import Nutriments from '../components/Nutriments';
@@ -72,7 +72,14 @@ export default function Product({ products, recipes }) {
       products !== null && (
         <View style={styles.container}>
           <Text style={styles.name}>{products.product.product_name}</Text>
-          <Image source={{ uri: products.product.image_front_small_url }} style={styles.image} />
+          <Image
+            source={{
+              uri: products.product.image_front_small_url
+                ? products.product.image_front_small_url
+                : 'https://orbis-alliance.com/wp-content/themes/consultix/images/no-image-found-360x260.png',
+            }}
+            style={styles.image}
+          />
 
           {/* nutriscore = undefined ? errorMessage : afficher le score */}
           {products.product.nutriscore_grade === undefined ? (
@@ -82,17 +89,26 @@ export default function Product({ products, recipes }) {
           )}
 
           {/* ============== link button for viewing recipe results ============ */}
-          <TouchableOpacity
-            onPress={() => {
-              setShowRecipePage(!showRecipePage);
-              Vibration.vibrate(50);
-            }}
-          >
-            <Text style={styles.recipeButton}>
-              {' '}
-              {showRecipePage ? 'Go back' : recipes.length + ' possible recipes'}
-            </Text>
-          </TouchableOpacity>
+          <View style={styles.recipeButtonContainer}>
+            <TouchableOpacity
+              onPress={() => {
+                setShowRecipePage(!showRecipePage);
+                Vibration.vibrate(50);
+              }}
+            >
+              <Text style={styles.recipeButton}>
+                {' '}
+                {showRecipePage ? 'Go back' : recipes.length + ' possible recipes'}
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                Vibration.vibrate(50);
+              }}
+            >
+              <Text style={styles.recipeResetButton}>Reset</Text>
+            </TouchableOpacity>
+          </View>
 
           {showRecipePage && <RecipeList recipes={recipes} />}
 
@@ -180,5 +196,18 @@ const styles = StyleSheet.create({
     backgroundColor: 'gold',
     borderRadius: 50,
     marginTop: 5,
+  },
+  recipeResetButton: {
+    backgroundColor: 'brown',
+    borderColor: 'skyblue',
+    color: 'white',
+    borderWidth: 1,
+    padding: 5,
+    borderRadius: 50,
+    marginTop: 5,
+    marginLeft: 5,
+  },
+  recipeButtonContainer: {
+    flexDirection: 'row',
   },
 });
