@@ -10,7 +10,7 @@ export default function RecipeList({ recipes }) {
           style={styles.recipesList}
           onPress={() =>
             Linking.openURL(
-              `https://4e3e-82-121-4-45.eu.ngrok.io/recipe-php/recipeLists.php?ingredient=${item}&submit=Submit`
+              `https://42d9-82-121-4-45.eu.ngrok.io/recipe-php/recipeLists.php?ingredient=${item}&submit=Submit`
             )
           }
         >

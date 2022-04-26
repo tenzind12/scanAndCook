@@ -30,8 +30,6 @@ export default function App() {
         ? setErrorMessage("We don't rate this type of product")
         : setProducts(responseBody);
 
-      console.log(responseBody.product.image_front_small_url);
-
       /** ================================================================= **
        * FOLLOWING CODES TO FETCH POSSIBLE RECIPES FROM (recipe-php site) *
        */ //=============================================================== //
@@ -45,7 +43,7 @@ export default function App() {
         // F I R S T   T I M E    S C A N N I N G
         if (recipeIngredient.length <= 0) {
           const recipeResponse = await fetch(
-            `https://4e3e-82-121-4-45.eu.ngrok.io/recipe-php/api/v1/index.php?request=products`
+            `https://42d9-82-121-4-45.eu.ngrok.io/recipe-php/api/v1/index.php?request=products`
           );
           const recipeResBody = await recipeResponse.json();
 

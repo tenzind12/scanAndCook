@@ -15,23 +15,26 @@ export default function Product({ products, recipes, setRecipeIngredient, setPos
 
   // A D D   B U T T O N   H A N D L E R
   const saveItemHandler = () => {
+    const newCurrentProducts = [
+      ...currentProducts,
+      {
+        id: Date.now(),
+        name: products.product.product_name,
+        image: products.product.image_front_small_url,
+        rating: products.product.nutriscore_grade,
+      },
+    ];
     // check if already saved
     if (currentProducts.length > 0) {
       currentProducts.forEach((product) => {
         if (product.name === products.product.product_name) {
           alert('This product is already saved');
+        } else {
+          setCurrentProducts(newCurrentProducts);
+          alert('Item has been saved to your list');
         }
       });
     } else {
-      const newCurrentProducts = [
-        ...currentProducts,
-        {
-          id: Date.now(),
-          name: products.product.product_name,
-          image: products.product.image_front_small_url,
-          rating: products.product.nutriscore_grade,
-        },
-      ];
       setCurrentProducts(newCurrentProducts);
       alert('Item has been saved to your list');
     }
