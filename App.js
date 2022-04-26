@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Button, Vibration } from 'react-native';
+import { StyleSheet, Text, View, Vibration, TouchableOpacity } from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import React, { useState, useEffect } from 'react';
 import Product from './pages/Product';
@@ -110,7 +110,15 @@ export default function App() {
         <BarCodeScanner
           onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
           style={(StyleSheet.absoluteFillObject, styles.camera)}
-        />
+        >
+          <View style={styles.layerTop} />
+          <View style={styles.layerCenter}>
+            <View style={styles.layerLeft} />
+            <View style={styles.focused} />
+            <View style={styles.layerRight} />
+          </View>
+          <View style={styles.layerBottom} />
+        </BarCodeScanner>
       )}
 
       {/* if the product is not found */}
@@ -125,20 +133,21 @@ export default function App() {
         />
       )}
 
-      <View style={styles.button}>
-        <Button
-          title={'Tap to Scan Again'}
-          onPress={() => {
-            setScanned(false);
-            setErrorMessage(null);
-            Vibration.vibrate(50);
-          }}
-        />
-      </View>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => {
+          setScanned(false);
+          setErrorMessage(null);
+          Vibration.vibrate(50);
+        }}
+      >
+        <Text style={styles.scanText}>&#128257; Scan</Text>
+      </TouchableOpacity>
     </View>
   );
 }
 
+const opacity = 'rgba(0, 0, 0, 0.5)';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -147,7 +156,13 @@ const styles = StyleSheet.create({
   },
 
   button: {
-    marginTop: 50,
+    backgroundColor: '#00b894',
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 5,
+    alignItems: 'center',
+    borderBottomWidth: 1,
+    marginTop: 20,
   },
 
   noProduct: {
@@ -158,8 +173,36 @@ const styles = StyleSheet.create({
     marginTop: 100,
   },
   camera: {
-    height: 500,
-    width: 500,
-    marginTop: 80,
+    // flex: 1,
+    // flexDirection: 'column',
+    height: '100%',
+    width: '100%',
+  },
+  layerTop: {
+    flex: 2,
+    backgroundColor: opacity,
+  },
+  layerCenter: {
+    flex: 1,
+    flexDirection: 'row',
+  },
+  layerLeft: {
+    flex: 1,
+    backgroundColor: opacity,
+  },
+  focused: {
+    flex: 10,
+  },
+  layerRight: {
+    flex: 1,
+    backgroundColor: opacity,
+  },
+  layerBottom: {
+    flex: 2,
+    backgroundColor: opacity,
+  },
+  scanText: {
+    color: 'white',
+    fontSize: 20,
   },
 });

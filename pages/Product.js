@@ -179,7 +179,8 @@ const styles = StyleSheet.create({
     marginTop: 30,
     marginBottom: 10,
     marginHorizontal: 10,
-    padding: 20,
+    paddingVertical: 20,
+    paddingHorizontal: 10,
     backgroundColor: '#f5f5f5',
     borderRadius: 7,
     borderWidth: 1,
@@ -189,6 +190,7 @@ const styles = StyleSheet.create({
     height: 150,
     width: 150,
     resizeMode: 'contain',
+    marginRight: 15,
   },
   name: {
     fontSize: 20,
