@@ -1,6 +1,5 @@
 import { View, Text, Image, StyleSheet, TouchableOpacity, Vibration } from 'react-native';
 import { useState, useEffect } from 'react';
-// import { saveAlert } from '../services/Service';
 import Nutriments from '../components/Nutriments';
 import Nutriscore from '../components/Nutriscore';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -73,44 +72,64 @@ export default function Product({ products, recipes, setRecipeIngredient, setPos
     return (
       products !== null && (
         <View style={styles.container}>
-          <Text style={styles.name}>{products.product.product_name}</Text>
-          <Image
-            source={{
-              uri: products.product.image_front_small_url
-                ? products.product.image_front_small_url
-                : 'https://orbis-alliance.com/wp-content/themes/consultix/images/no-image-found-360x260.png',
+          {/* saved items list */}
+          <TouchableOpacity
+            style={styles.listBtn}
+            onPress={() => {
+              setPageChange(false);
+              Vibration.vibrate(50);
             }}
-            style={styles.image}
-          />
+          >
+            <Text>Your Items</Text>
+          </TouchableOpacity>
 
-          {/* nutriscore = undefined ? errorMessage : afficher le score */}
-          {products.product.nutriscore_grade === undefined ? (
-            <Text style={styles.noScoreMessage}>This item doesn't have a nutriscore value</Text>
-          ) : (
-            <Nutriscore nutriscore_grade={products.product.nutriscore_grade} />
-          )}
+          <View style={styles.imageContainer}>
+            <Image
+              source={{
+                uri: products.product.image_front_small_url
+                  ? products.product.image_front_small_url
+                  : 'https://orbis-alliance.com/wp-content/themes/consultix/images/no-image-found-360x260.png',
+              }}
+              style={styles.image}
+            />
+            <View style={styles.name_scoreContainer}>
+              <Text style={styles.name}>{products.product.product_name}</Text>
+
+              {/* nutriscore = undefined ? errorMessage : afficher le score */}
+              {products.product.nutriscore_grade === undefined ? (
+                <Text style={styles.noScoreMessage}>This item doesn't have a nutriscore value</Text>
+              ) : (
+                <Nutriscore nutriscore_grade={products.product.nutriscore_grade} />
+              )}
+            </View>
+          </View>
 
           {/* ============== link button for viewing recipe results ============ */}
-          <View style={styles.recipeButtonContainer}>
-            <TouchableOpacity
-              onPress={() => {
-                setShowRecipePage(!showRecipePage);
-                Vibration.vibrate(50);
-              }}
-            >
-              <Text style={styles.recipeButton}>
-                {' '}
-                {showRecipePage ? 'Go back' : recipes.length + ' possible recipes'}
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => {
-                setRecipeIngredient([]);
-                setPossibleRecipes([]);
-                Vibration.vibrate(50);
-              }}
-            >
-              <Text style={styles.recipeResetButton}>Reset</Text>
+          <View style={styles.threeBtnContainer}>
+            <View style={styles.recipeBtnContainer}>
+              <TouchableOpacity
+                onPress={() => {
+                  setShowRecipePage(!showRecipePage);
+                  Vibration.vibrate(50);
+                }}
+              >
+                <Text style={styles.recipeButton}>
+                  {' '}
+                  {showRecipePage ? 'Go back' : recipes.length + ' Recipes Found'}
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => {
+                  setRecipeIngredient([]);
+                  setPossibleRecipes([]);
+                  Vibration.vibrate(50);
+                }}
+              >
+                <Text style={styles.recipeResetButton}>Reset</Text>
+              </TouchableOpacity>
+            </View>
+            <TouchableOpacity style={styles.bookmarkBtn} onPress={saveItemHandler}>
+              <Text style={{ color: 'white' }}>Save</Text>
             </TouchableOpacity>
           </View>
 
@@ -121,20 +140,9 @@ export default function Product({ products, recipes, setRecipeIngredient, setPos
             <>
               {/* nutrition scores component*/}
               <Nutriments nutriments={products.product.nutriments} />
-              <View style={styles.buttonContainer}>
-                <TouchableOpacity
-                  style={styles.listBtn}
-                  onPress={() => {
-                    setPageChange(false);
-                    Vibration.vibrate(50);
-                  }}
-                >
-                  <Text>Your Items</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.saveBtn} onPress={saveItemHandler}>
-                  <Text>Save item</Text>
-                </TouchableOpacity>
-              </View>
+              {/* <View style={styles.buttonContainer}>
+                
+              </View> */}
             </>
           )}
         </View>
@@ -153,66 +161,80 @@ export default function Product({ products, recipes, setRecipeIngredient, setPos
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 80,
-    alignItems: 'center',
-  },
-  name: {
-    fontWeight: '100',
-    textAlign: 'center',
-    fontSize: 25,
-    marginBottom: 10,
-  },
-  image: {
-    height: 200,
-    width: 200,
-    resizeMode: 'contain',
-  },
-  noScoreMessage: {
-    backgroundColor: 'teal',
-    color: 'white',
-    marginTop: 10,
-    padding: 5,
-    borderRadius: 7,
-  },
-  buttonContainer: {
-    flexDirection: 'row',
-    marginTop: 10,
+    marginTop: 60,
   },
   listBtn: {
-    borderColor: 'skyblue',
-    borderWidth: 1,
-    padding: 5,
-    borderRadius: 7,
-    marginRight: 10,
+    alignSelf: 'flex-end',
+    borderBottomColor: 'grey',
+    borderBottomWidth: 1,
   },
-  saveBtn: {
-    borderColor: 'green',
-    borderWidth: 1,
-    padding: 5,
+  imageContainer: {
+    flexDirection: 'row',
+    shadowColor: '#77a8a8',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 2,
+    elevation: 1,
+    marginTop: 30,
+    marginBottom: 10,
+    marginHorizontal: 10,
+    padding: 20,
+    backgroundColor: '#f5f5f5',
     borderRadius: 7,
-    marginLeft: 10,
+    borderWidth: 1,
+    borderColor: '#ddd',
+  },
+  image: {
+    height: 150,
+    width: 150,
+    resizeMode: 'contain',
+  },
+  name: {
+    fontSize: 20,
+    color: '#303331',
+  },
+  name_scoreContainer: {
+    width: '50%',
+    justifyContent: 'space-evenly',
   },
   recipeButton: {
     color: 'white',
-    borderColor: 'skyblue',
-    borderWidth: 1,
     padding: 5,
-    backgroundColor: 'gold',
-    borderRadius: 50,
+    borderBottomWidth: 1,
+    borderRightWidth: 1,
+    backgroundColor: '#47b3b3',
+    borderRadius: 5,
     marginTop: 5,
+    shadowColor: '#171717',
+    shadowOffset: { width: -2, height: 4 },
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
   },
   recipeResetButton: {
-    backgroundColor: 'brown',
-    borderColor: 'skyblue',
+    backgroundColor: '#f26363',
     color: 'white',
-    borderWidth: 1,
+    borderBottomWidth: 1,
+    borderRightWidth: 1,
     padding: 5,
-    borderRadius: 50,
+    borderRadius: 5,
     marginTop: 5,
     marginLeft: 5,
   },
-  recipeButtonContainer: {
+  bookmarkBtn: {
+    backgroundColor: '#47b3b3',
+    padding: 5,
+    marginTop: 5,
+    borderBottomWidth: 1,
+    borderRightWidth: 1,
+    borderRadius: 5,
+  },
+  threeBtnContainer: {
     flexDirection: 'row',
     marginBottom: 5,
+    justifyContent: 'space-between',
+    marginHorizontal: 10,
+  },
+  recipeBtnContainer: {
+    flexDirection: 'row',
   },
 });

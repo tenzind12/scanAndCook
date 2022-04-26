@@ -56,18 +56,21 @@ export default function Nutriments({ nutriments }) {
 
 const styles = StyleSheet.create({
   nutrimentsContainer: {
-    width: 300,
-    borderColor: 'black',
+    marginHorizontal: 10,
+    borderColor: '#ddd',
     borderWidth: 0.5,
     borderRadius: 5,
-    padding: 5,
+    padding: 10,
     marginTop: 10,
+    backgroundColor: '#f5f5f5',
   },
   nutriment: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    marginTop: 8,
   },
   spanText: {
+    color: 'grey',
     fontSize: 10,
   },
 });
