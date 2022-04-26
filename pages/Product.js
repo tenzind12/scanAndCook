@@ -80,7 +80,7 @@ export default function Product({ products, recipes, setRecipeIngredient, setPos
               Vibration.vibrate(50);
             }}
           >
-            <Text>Your Items</Text>
+            <Text>Bookmarked Items</Text>
           </TouchableOpacity>
 
           <View style={styles.imageContainer}>
@@ -167,6 +167,7 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-end',
     borderBottomColor: 'grey',
     borderBottomWidth: 1,
+    marginRight: 10,
   },
   imageContainer: {
     flexDirection: 'row',
