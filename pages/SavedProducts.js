@@ -20,34 +20,44 @@ export default function SavedProducts({ setPageChange, storedItems, deleteHandle
   return (
     <View style={styles.container}>
       <Button title="Back" onPress={backBtnHandler} />
-      <Text style={styles.title}>Saved Products</Text>
+      <Text style={styles.title}>Your Saved items</Text>
+      <Text style={styles.subtitle}>You can add multiple ingredients together</Text>
+
       <FlatList
         data={storedItems}
         renderItem={({ item, index }) => (
+          // each list container
           <View style={styles.itemContainer}>
-            <Text style={styles.itemName}>{item.name}</Text>
-            {item.image !== undefined && (
-              <Image source={{ uri: item.image }} style={styles.image} />
-            )}
-            {item.image === undefined && (
-              <Image
-                source={{
-                  uri: 'https://ps.w.org/replace-broken-images/assets/icon-256x256.png?rev=2561727',
-                }}
-                style={styles.image}
-              />
-            )}
-            <View style={styles.deleteContainer}>
+            <View>
+              {item.image !== undefined && (
+                <Image source={{ uri: item.image }} style={styles.image} />
+              )}
+              {item.image === undefined && (
+                <Image
+                  source={{
+                    uri: 'https://ps.w.org/replace-broken-images/assets/icon-256x256.png?rev=2561727',
+                  }}
+                  style={styles.image}
+                />
+              )}
+            </View>
+            <View>
+              {/* product name */}
+              <Text style={styles.itemName}>{item.name}</Text>
+
+              {/* rating stars */}
               {item.rating !== undefined ? (
-                <Text>Rating: {rating(item.rating)}</Text>
+                <Text style={styles.ratingText}>Rating: {rating(item.rating)}</Text>
               ) : (
                 <Text>{rating(item.rating)}</Text>
               )}
-              <TouchableOpacity onPress={deleteHandler(item.id)} style={styles.deleteBtn}>
-                <Text style={styles.deleteText}>Delete</Text>
-              </TouchableOpacity>
             </View>
+            {/* delete button  */}
+            <TouchableOpacity onPress={deleteHandler(item.id)} style={styles.deleteBtn}>
+              <Text style={styles.deleteIcon}>❌</Text>
+            </TouchableOpacity>
           </View>
+          // end of container
         )}
         keyExtractor={(_, index) => index}
       ></FlatList>
@@ -59,53 +69,56 @@ const styles = StyleSheet.create({
   container: {
     marginTop: 50,
     padding: 10,
+    backgroundColor: 'transparent',
   },
   title: {
-    fontSize: 30,
+    fontSize: 23,
     fontWeight: 'bold',
     textAlign: 'center',
-    // shadow box
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
     padding: 10,
+    color: 'grey',
+  },
+  subtitle: {
+    color: 'grey',
+    borderTopWidth: 1,
+    borderBottomColor: 'grey',
+    borderTopColor: 'grey',
+    borderBottomWidth: 1,
     marginBottom: 20,
+    textAlign: 'center',
   },
   itemContainer: {
+    flexDirection: 'row',
     borderWidth: 1,
-    borderColor: 'skyblue',
-    padding: 10,
+    borderColor: 'grey',
+    padding: 20,
     marginBottom: 10,
-    borderRadius: 7,
+    backgroundColor: '#273754',
   },
   itemName: {
-    fontSize: 20,
+    fontSize: 16,
     fontWeight: '100',
-    color: 'teal',
-    marginBottom: 10,
-  },
-  image: {
-    height: 200,
-    width: 200,
-    resizeMode: 'contain',
-  },
-  deleteContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: 10,
+    color: '#ededed',
   },
   deleteBtn: {
-    borderColor: 'red',
+    backgroundColor: '#bdbdbd',
     borderWidth: 1,
+    borderColor: 'grey',
+    borderRadius: 50,
     padding: 3,
-    borderRadius: 7,
+    position: 'absolute',
+    top: 0,
+    right: 0,
   },
-  deleteText: {
-    color: 'grey',
+  deleteIcon: {
+    fontSize: 10,
+  },
+  ratingText: {
+    color: '#b9babd',
+  },
+  image: {
+    height: 100,
+    width: 100,
+    resizeMode: 'contain',
   },
 });

@@ -43,7 +43,7 @@ export default function App() {
         // F I R S T   T I M E    S C A N N I N G
         if (recipeIngredient.length <= 0) {
           const recipeResponse = await fetch(
-            `https://42d9-82-121-4-45.eu.ngrok.io/recipe-php/api/v1/index.php?request=products`
+            `https://68fa-82-121-4-45.eu.ngrok.io/recipe-php/api/v1/index.php?request=products`
           );
           const recipeResBody = await recipeResponse.json();
 

@@ -1,4 +1,4 @@
-import { View, Text, Image, StyleSheet, TouchableOpacity, Vibration } from 'react-native';
+import { View, Text, Image, StyleSheet, TouchableOpacity, Vibration, Alert } from 'react-native';
 import { useState, useEffect } from 'react';
 import Nutriments from '../components/Nutriments';
 import Nutriscore from '../components/Nutriscore';
@@ -14,6 +14,7 @@ export default function Product({ products, recipes, setRecipeIngredient, setPos
 
   // A D D   B U T T O N   H A N D L E R
   const saveItemHandler = () => {
+    console.log(products);
     const newCurrentProducts = [
       ...currentProducts,
       {
@@ -21,6 +22,7 @@ export default function Product({ products, recipes, setRecipeIngredient, setPos
         name: products.product.product_name,
         image: products.product.image_front_small_url,
         rating: products.product.nutriscore_grade,
+        keywords: products.product._keywords,
       },
     ];
     // check if already saved
@@ -43,8 +45,16 @@ export default function Product({ products, recipes, setRecipeIngredient, setPos
   // D E L E T E   B U T T O N   H A N D L E R
   const deleteHandler = (id) => {
     return () => {
-      const newCurrentProducts = currentProducts.filter((item) => item.id !== id);
-      setCurrentProducts(newCurrentProducts);
+      Alert.alert('Removing Item !', 'Are you sure you want to remove this item?', [
+        {
+          text: 'Yes',
+          onPress: () => {
+            const newCurrentProducts = currentProducts.filter((item) => item.id !== id);
+            setCurrentProducts(newCurrentProducts);
+          },
+        },
+        { text: 'No' },
+      ]);
     };
   };
 
