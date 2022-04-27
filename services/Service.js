@@ -17,28 +17,5 @@ export const rating = (nutriscore_grade) => {
 
 export const BASE_URL = 'https://68fa-82-121-4-45.eu.ngrok.io/';
 
-export const filterArray = [
-  'and',
-  'vegetable',
-  'fresh',
-  'food',
-  'marketplace',
-  'their',
-  'product',
-  'paste',
-  'red',
-  'de',
-  'in',
-  'et',
-  'rouge',
-  'sec',
-  'dry',
-  'vegetale',
-  'boisson',
-  'frozen',
-  'meat',
-  'ready',
-  'france',
-  'source',
-  'naturelle',
-];
+// prettier-ignore
+export const filterArray = ['and','vegetable','fresh','food','marketplace','their','product','paste','red','de','in','et','rouge','sec','dry','vegetale','boisson','frozen','meat','ready','france','source','naturelle','inc', 'white', 'free', 'verified', 'usa', 'artisan'];

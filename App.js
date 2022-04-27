@@ -36,7 +36,7 @@ export default function App() {
        */ //=============================================================== //
       if (responseBody.status) {
         const productKeywords = responseBody.product._keywords.filter(
-          (word) => filterArray.indexOf(word) == -1
+          (word) => filterArray.indexOf(word) === -1
         );
 
         // F I R S T   I N G R E D I E N T
