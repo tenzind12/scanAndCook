@@ -2,6 +2,7 @@ import { StyleSheet, Text, View, Vibration, TouchableOpacity } from 'react-nativ
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import React, { useState, useEffect } from 'react';
 import Product from './pages/Product';
+import { BASE_URL, filterArray } from './services/Service';
 
 export default function App() {
   const [hasPermission, setHasPermission] = useState(null);
@@ -34,16 +35,14 @@ export default function App() {
        * FOLLOWING CODES TO FETCH POSSIBLE RECIPES FROM (recipe-php site) *
        */ //=============================================================== //
       if (responseBody.status) {
-        // prettier-ignore
-        const filterArray = ['and','vegetable','fresh','food','marketplace','their','product','paste',]; // some keywords to exclude (filter)
         const productKeywords = responseBody.product._keywords.filter(
           (word) => filterArray.indexOf(word) == -1
         );
 
-        // F I R S T   T I M E    S C A N N I N G
+        // F I R S T   I N G R E D I E N T
         if (recipeIngredient.length <= 0) {
           const recipeResponse = await fetch(
-            `https://68fa-82-121-4-45.eu.ngrok.io/recipe-php/api/v1/index.php?request=products`
+            `${BASE_URL}recipe-php/api/v1/index.php?request=products`
           );
           const recipeResBody = await recipeResponse.json();
 
@@ -60,14 +59,16 @@ export default function App() {
             }
           });
 
+          console.log('recipesResult', recipesResults);
           // SENDING unique RECIPES NAMES TO RECIPELIST.JSX
           const name = [];
-          // const ingredients = [];
           recipesResults.forEach((recipeObj) => {
             name.push(recipeObj['01']);
             const uniqueRecipeName = new Set(name);
             setPossibleRecipes(Array.from(uniqueRecipeName));
           });
+
+          // setting recipes
           setRecipeIngredient([recipesResults]);
         } else {
           // S E C O N D   T I M E    S C A N N I N G
@@ -93,6 +94,7 @@ export default function App() {
             const uniqueRecipeName = new Set(name);
             setPossibleRecipes(Array.from(uniqueRecipeName));
           });
+          // setting recipes
           setRecipeIngredient([recipesResults]);
         }
       }

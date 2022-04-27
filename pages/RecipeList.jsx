@@ -1,5 +1,6 @@
 import { Text, Linking, FlatList, StyleSheet } from 'react-native';
 import React from 'react';
+import { BASE_URL } from '../services/Service';
 
 export default function RecipeList({ recipes }) {
   return (
@@ -11,7 +12,7 @@ export default function RecipeList({ recipes }) {
             style={styles.recipesList}
             onPress={() =>
               Linking.openURL(
-                `https://68fa-82-121-4-45.eu.ngrok.io/recipe-php/recipeLists.php?ingredient=${item}&submit=Submit`
+                `${BASE_URL}recipe-php/recipeLists.php?ingredient=${item}&submit=Submit`
               )
             }
           >
@@ -36,8 +37,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#f5f5f5',
   },
   theEndText: {
-    color: 'grey',
+    color: 'whitesmoke',
     textAlign: 'center',
     marginBottom: 3,
+    backgroundColor: 'black',
   },
 });

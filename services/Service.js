@@ -11,6 +11,34 @@ export const rating = (nutriscore_grade) => {
     case 'e':
       return '⭐';
     default:
-      return 'No rating available';
+      return 'No rating available :/';
   }
 };
+
+export const BASE_URL = 'https://68fa-82-121-4-45.eu.ngrok.io/';
+
+export const filterArray = [
+  'and',
+  'vegetable',
+  'fresh',
+  'food',
+  'marketplace',
+  'their',
+  'product',
+  'paste',
+  'red',
+  'de',
+  'in',
+  'et',
+  'rouge',
+  'sec',
+  'dry',
+  'vegetale',
+  'boisson',
+  'frozen',
+  'meat',
+  'ready',
+  'france',
+  'source',
+  'naturelle',
+];
