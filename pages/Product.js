@@ -14,7 +14,7 @@ export default function Product({ products, recipes, setRecipeIngredient, setPos
 
   // A D D   B U T T O N   H A N D L E R
   const saveItemHandler = () => {
-    console.log('products.jsx =>', products);
+    // console.log('products.jsx =>', products);
     const newCurrentProducts = [
       ...currentProducts,
       {
@@ -25,20 +25,21 @@ export default function Product({ products, recipes, setRecipeIngredient, setPos
         keywords: products.product._keywords,
       },
     ];
-    // check if already saved
-    if (currentProducts.length > 0) {
+    // CHECK IF ALREADY SAVED
+    let duplicateCount = 0;
+    if (currentProducts.length >= 1) {
       currentProducts.forEach((product) => {
         if (product.name === products.product.product_name) {
           alert('This product is already saved');
-        } else {
-          setCurrentProducts(newCurrentProducts);
-          alert('Item has been saved to your list');
+          duplicateCount++;
         }
       });
-    } else {
+    }
+    if (!duplicateCount) {
       setCurrentProducts(newCurrentProducts);
       alert('Item has been saved to your list');
     }
+
     Vibration.vibrate(100);
   };
 

@@ -14,10 +14,13 @@ export default function App() {
   const [recipeIngredient, setRecipeIngredient] = useState([]);
 
   useEffect(() => {
+    let isMounted = true;
     (async () => {
       const { status } = await BarCodeScanner.requestPermissionsAsync();
-      setHasPermission(status === 'granted');
+      if (isMounted) setHasPermission(status === 'granted');
     })();
+
+    return () => (isMounted = false);
   }, []);
 
   const handleBarCodeScanned = async ({ type, data }) => {
@@ -27,7 +30,6 @@ export default function App() {
     try {
       const response = await fetch(`https://world.openfoodfacts.org/api/v0/product/${data}.json`);
       const responseBody = await response.json();
-      console.log(responseBody.status);
       responseBody.status === 0
         ? setErrorMessage("We don't rate this type of product")
         : setProducts(responseBody);
@@ -39,6 +41,8 @@ export default function App() {
         const productKeywords = responseBody.product._keywords.filter(
           (word) => filterArray.indexOf(word) === -1
         );
+
+        console.log('keywords => ', productKeywords);
 
         // F I R S T   I N G R E D I E N T
         if (recipeIngredient.length <= 0) {
@@ -60,7 +64,7 @@ export default function App() {
             }
           });
 
-          console.log('recipesResult', recipesResults);
+          // console.log('recipesResult', recipesResults);
           // SENDING unique RECIPES NAMES TO RECIPELIST.JSX
           const name = [];
           recipesResults.forEach((recipeObj) => {
