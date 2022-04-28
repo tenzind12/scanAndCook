@@ -14,9 +14,21 @@ import RecipeList from './RecipeList';
 
 export default function SavedProducts({ setPageChange, storedItems, deleteHandler }) {
   const [keywords, setKeywords] = useState([]);
+  const [isAdded, setIsAdded] = useState([]);
+
+  const [currentAddedIndex, setCurrentAddedIndex] = useState([]);
+
   const [recipes, setRecipes] = useState([]);
   const [recipeNames, setRecipeNames] = useState([]);
   const [showRecipeList, setShowRecipeList] = useState(false);
+
+  // T E S T
+  useEffect(() => {
+    console.log(isAdded);
+    console.log(currentAddedIndex);
+  }, [isAdded]);
+
+  // //////////////
 
   // B A C K   H A N D L E R
   const backBtnHandler = () => {
@@ -25,11 +37,27 @@ export default function SavedProducts({ setPageChange, storedItems, deleteHandle
   };
 
   // A D D   I N G R E D I E N T   H A N D L E R
-  const addKeywordHandler = (itemKeywords) => {
+  const addKeywordHandler = (itemKeywords, index) => {
     const productKeywords = itemKeywords.filter((word) => filterArray.indexOf(word) == -1);
     setKeywords(productKeywords);
-    // console.log(productKeywords);
-    // console.log(recipeNames);
+
+    // object of item added in array
+    const newIsAdded = [...isAdded, storedItems[index]];
+    let count = 0;
+    if (isAdded) {
+      isAdded.forEach((itemObj) => {
+        if (itemObj.id === storedItems[index].id) {
+          alert('Ingredient already added');
+          count++;
+        }
+      });
+    }
+    if (!count) {
+      setIsAdded(newIsAdded);
+      const newCurrentAddedIndex = [...currentAddedIndex, index];
+      setCurrentAddedIndex(newCurrentAddedIndex);
+    }
+
     Vibration.vibrate(50);
   };
 
@@ -37,6 +65,8 @@ export default function SavedProducts({ setPageChange, storedItems, deleteHandle
   const resetHandler = () => {
     setRecipes([]);
     setRecipeNames([]);
+    setIsAdded([]);
+    setCurrentAddedIndex([]);
     Vibration.vibrate(50);
   };
 
@@ -121,7 +151,9 @@ export default function SavedProducts({ setPageChange, storedItems, deleteHandle
         data={storedItems}
         renderItem={({ item, index }) => (
           // each list container
-          <View style={styles.itemContainer}>
+          <View
+            style={[styles.itemContainer, currentAddedIndex.includes(index) ? styles.added : '']}
+          >
             <View>
               {item.image !== undefined && (
                 <Image source={{ uri: item.image }} style={styles.image} />
@@ -146,9 +178,10 @@ export default function SavedProducts({ setPageChange, storedItems, deleteHandle
                 <Text style={styles.ratingText}>{rating(item.rating)}</Text>
               )}
 
+              {/* A D D   B U T T O N  */}
               <TouchableOpacity
                 style={styles.addIngredientBtn}
-                onPress={() => addKeywordHandler(item.keywords)}
+                onPress={() => addKeywordHandler(item.keywords, index)}
               >
                 <Text style={styles.addIngredientBtnText}>Add to ingredient</Text>
               </TouchableOpacity>
@@ -171,7 +204,7 @@ const styles = StyleSheet.create({
   container: {
     marginTop: 50,
     padding: 10,
-    backgroundColor: 'transparent',
+    // backgroundColor: 'transparent',
   },
   title: {
     fontSize: 23,
@@ -257,5 +290,8 @@ const styles = StyleSheet.create({
   addIngredientBtnText: {
     textAlign: 'center',
     color: 'white',
+  },
+  added: {
+    backgroundColor: '#4a317d',
   },
 });
