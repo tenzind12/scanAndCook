@@ -17,7 +17,8 @@ export default function SavedProducts({ setPageChange, storedItems, deleteHandle
   const [recipes, setRecipes] = useState([]);
   const [recipeNames, setRecipeNames] = useState([]);
   const [showRecipeList, setShowRecipeList] = useState(false);
-  // back to product page
+
+  // B A C K   H A N D L E R
   const backBtnHandler = () => {
     setPageChange(true);
     Vibration.vibrate(100);
@@ -27,7 +28,16 @@ export default function SavedProducts({ setPageChange, storedItems, deleteHandle
   const addKeywordHandler = (itemKeywords) => {
     const productKeywords = itemKeywords.filter((word) => filterArray.indexOf(word) == -1);
     setKeywords(productKeywords);
-    console.log(productKeywords);
+    // console.log(productKeywords);
+    // console.log(recipeNames);
+    Vibration.vibrate(50);
+  };
+
+  // R E S E T  R E C I P E   R E S U L T
+  const resetHandler = () => {
+    setRecipes([]);
+    setRecipeNames([]);
+    Vibration.vibrate(50);
   };
 
   // FUNCTION TO FETCH RECIPES
@@ -84,19 +94,29 @@ export default function SavedProducts({ setPageChange, storedItems, deleteHandle
 
   return (
     <View style={styles.container}>
+      {/* TITLE AND SUBTITLE*/}
       <Button title="Back" onPress={backBtnHandler} />
       <Text style={styles.title}>Your Saved items</Text>
       <Text style={styles.subtitle}>
         Search recipes with <Text style={{ fontWeight: 'bold' }}>'Add to ingredient'</Text> button
       </Text>
+      {/* END OF TITLE AND SUBTITLE*/}
 
-      {/* show recipe button */}
+      {/* RECIPES LIST SECTION */}
       {recipeNames.length > 0 && (
-        <TouchableOpacity onPress={() => setShowRecipeList(!showRecipeList)}>
-          <Text style={styles.recipeTitle}>{recipeNames.length} recipes found</Text>
-        </TouchableOpacity>
+        <View style={styles.recipeBtnContainer}>
+          <TouchableOpacity onPress={() => setShowRecipeList(!showRecipeList)}>
+            <Text style={styles.recipeShowBtn}>{recipeNames.length} recipes found</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={resetHandler}>
+            <Text style={styles.resetBtn}>Reset</Text>
+          </TouchableOpacity>
+        </View>
       )}
-      {showRecipeList && <RecipeList recipes={recipeNames} />}
+      {showRecipeList && recipeNames.length > 0 && <RecipeList recipes={recipeNames} />}
+      {/* END OF RECIPES LIST SECTION */}
+
+      {/* BOOKMARKED LIST */}
       <FlatList
         data={storedItems}
         renderItem={({ item, index }) => (
@@ -130,7 +150,7 @@ export default function SavedProducts({ setPageChange, storedItems, deleteHandle
                 style={styles.addIngredientBtn}
                 onPress={() => addKeywordHandler(item.keywords)}
               >
-                <Text style={styles.addIngredientBtnText}>Add to ingredient list</Text>
+                <Text style={styles.addIngredientBtnText}>Add to ingredient</Text>
               </TouchableOpacity>
             </View>
             {/* delete button  */}
@@ -142,6 +162,7 @@ export default function SavedProducts({ setPageChange, storedItems, deleteHandle
         )}
         keyExtractor={(_, index) => index}
       ></FlatList>
+      {/* END OF BOOKMARKED LIST */}
     </View>
   );
 }
@@ -168,14 +189,31 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     textAlign: 'center',
   },
-
-  recipeTitle: {
+  recipeBtnContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  recipeShowBtn: {
     textAlign: 'center',
     fontSize: 20,
     color: 'white',
     backgroundColor: 'teal',
-    paddingVertical: 5,
+    paddingVertical: 2,
+    paddingHorizontal: 30,
     borderBottomWidth: 2,
+    borderRightWidth: 2,
+    borderRadius: 5,
+  },
+  resetBtn: {
+    textAlign: 'center',
+    fontSize: 20,
+    color: 'white',
+    backgroundColor: '#cf3f38',
+    paddingVertical: 2,
+    borderBottomWidth: 2,
+    paddingHorizontal: 20,
+    borderRightWidth: 2,
+    borderRadius: 5,
   },
   itemContainer: {
     flexDirection: 'row',

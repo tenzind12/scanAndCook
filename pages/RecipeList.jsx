@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
   theEndText: {
     color: 'whitesmoke',
     textAlign: 'center',
-    marginBottom: 3,
+    marginVertical: 13,
     backgroundColor: 'black',
   },
 });

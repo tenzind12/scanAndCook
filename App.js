@@ -22,11 +22,12 @@ export default function App() {
 
   const handleBarCodeScanned = async ({ type, data }) => {
     setScanned(true);
-    // console.log(`https://world.openfoodfacts.org/api/v0/product/${data}.json`);
+    console.log(`https://world.openfoodfacts.org/api/v0/product/${data}.json`);
 
     try {
       const response = await fetch(`https://world.openfoodfacts.org/api/v0/product/${data}.json`);
       const responseBody = await response.json();
+      console.log(responseBody.status);
       responseBody.status === 0
         ? setErrorMessage("We don't rate this type of product")
         : setProducts(responseBody);
@@ -99,7 +100,7 @@ export default function App() {
         }
       }
     } catch (e) {
-      console.log(e.message);
+      console.log('App.js Catch error 11=>', e.message);
     }
   };
 

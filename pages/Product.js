@@ -14,7 +14,7 @@ export default function Product({ products, recipes, setRecipeIngredient, setPos
 
   // A D D   B U T T O N   H A N D L E R
   const saveItemHandler = () => {
-    console.log(products);
+    console.log('products.jsx =>', products);
     const newCurrentProducts = [
       ...currentProducts,
       {
