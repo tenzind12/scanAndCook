@@ -13,22 +13,19 @@ import { BASE_URL, filterArray, rating } from '../services/Service';
 import RecipeList from './RecipeList';
 
 export default function SavedProducts({ setPageChange, storedItems, deleteHandler }) {
-  const [keywords, setKeywords] = useState([]);
-  const [isAdded, setIsAdded] = useState([]);
+  const [keywords, setKeywords] = useState([]); // recipes keywords recieved from 'add' Button
+  const [isAdded, setIsAdded] = useState([]); // recipes object added from 'add' button
 
-  const [currentAddedIndex, setCurrentAddedIndex] = useState([]);
+  const [currentAddedIndex, setCurrentAddedIndex] = useState([]); // state to update the container color when added to ingredient
 
-  const [recipes, setRecipes] = useState([]);
-  const [recipeNames, setRecipeNames] = useState([]);
+  const [recipes, setRecipes] = useState([]); // state to store all recipes extracted with keywords
+  const [recipeNames, setRecipeNames] = useState([]); // recipe names to pass to recipeList.js
   const [showRecipeList, setShowRecipeList] = useState(false);
 
-  // T E S T
+  // test
   useEffect(() => {
     console.log(isAdded);
-    console.log(currentAddedIndex);
-  }, [isAdded]);
-
-  // //////////////
+  }, [keywords]);
 
   // B A C K   H A N D L E R
   const backBtnHandler = () => {
@@ -81,9 +78,10 @@ export default function SavedProducts({ setPageChange, storedItems, deleteHandle
         const responseData = await recipesResponse.json();
         const allRecipes = responseData.data;
 
-        // extract recipes found by matching keywords from scanApp and ingredients in recipe fetched
         const recipesResults = [];
         const recipesResultsName = [];
+
+        // loop through allRecipes recieved from site-php and extract those matching with the keywords from addToIngredient button
         allRecipes.map((recipe) => {
           for (let i = 0; i < keywords.length; i++) {
             if (recipe.recipeIngredient.includes(keywords[i])) {
@@ -103,8 +101,10 @@ export default function SavedProducts({ setPageChange, storedItems, deleteHandle
       };
       fetchRecipes().catch((error) => console.log(error.message));
     } else {
+      // SECOND TIME CLICKING ADD BUTTON
       const recipesResults = [];
       const recipesResultsName = [];
+      // loop through recipes in recipesState and extract those matching with the keywords from addToIngredient button
       recipes.map((recipe) => {
         for (let i = 0; i < keywords.length; i++) {
           if (recipe[1].includes(keywords[i])) {
@@ -183,7 +183,9 @@ export default function SavedProducts({ setPageChange, storedItems, deleteHandle
                 style={styles.addIngredientBtn}
                 onPress={() => addKeywordHandler(item.keywords, index)}
               >
-                <Text style={styles.addIngredientBtnText}>Add to ingredient</Text>
+                <Text style={styles.addIngredientBtnText}>
+                  {currentAddedIndex.includes(index) ? 'Remove' : 'Add to ingredient'}
+                </Text>
               </TouchableOpacity>
             </View>
             {/* delete button  */}
