@@ -14,22 +14,25 @@ import RecipeList from './RecipeList';
 
 export default function SavedProducts({ setPageChange, storedItems, deleteHandler }) {
   const [keywords, setKeywords] = useState([]); // recipes keywords recieved from 'add' Button
-  const [isAdded, setIsAdded] = useState([]); // recipes object added from 'add' button
+  const [isAdded, setIsAdded] = useState([]); // ingredients object stored in array
 
-  const [currentAddedIndex, setCurrentAddedIndex] = useState([]); // state to update the container color when added to ingredient
+  const [currentAddedIndex, setCurrentAddedIndex] = useState([]); // state storing index to update the container color when added to ingredient
 
   const [recipes, setRecipes] = useState([]); // state to store all recipes extracted with keywords
   const [recipeNames, setRecipeNames] = useState([]); // recipe names to pass to recipeList.js
   const [showRecipeList, setShowRecipeList] = useState(false);
 
   // test
-  useEffect(() => {
-    console.log(isAdded);
-  }, [keywords]);
+  // useEffect(() => {
+  //   console.log(isAdded);
+  // }, [isAdded]);
 
   // B A C K   H A N D L E R
   const backBtnHandler = () => {
-    setPageChange(true);
+    let isMounted = true;
+    if (isMounted) setPageChange(true);
+
+    return () => (isMounted = false);
     Vibration.vibrate(100);
   };
 
@@ -184,7 +187,7 @@ export default function SavedProducts({ setPageChange, storedItems, deleteHandle
                 onPress={() => addKeywordHandler(item.keywords, index)}
               >
                 <Text style={styles.addIngredientBtnText}>
-                  {currentAddedIndex.includes(index) ? 'Remove' : 'Add to ingredient'}
+                  {currentAddedIndex.includes(index) ? 'ADDED' : 'ADD TO INGREDIENT'}
                 </Text>
               </TouchableOpacity>
             </View>

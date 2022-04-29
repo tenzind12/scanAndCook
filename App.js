@@ -104,7 +104,7 @@ export default function App() {
         }
       }
     } catch (e) {
-      console.log('App.js Catch error 11=>', e.message);
+      console.log('App.js Catch error =>', e.message);
     }
   };
 

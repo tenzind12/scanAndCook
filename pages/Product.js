@@ -7,7 +7,7 @@ import SavedProducts from './SavedProducts';
 import RecipeList from './RecipeList';
 
 export default function Product({ products, recipes, setRecipeIngredient, setPossibleRecipes }) {
-  const [currentProducts, setCurrentProducts] = useState([]);
+  const [bookmarkedProducts, setBookmarkedProducts] = useState([]);
   const [pageChange, setPageChange] = useState(true);
 
   const [showRecipePage, setShowRecipePage] = useState(false);
@@ -15,8 +15,8 @@ export default function Product({ products, recipes, setRecipeIngredient, setPos
   // A D D   B U T T O N   H A N D L E R
   const saveItemHandler = () => {
     // console.log('products.jsx =>', products);
-    const newCurrentProducts = [
-      ...currentProducts,
+    const newBookmarkedProducts = [
+      ...bookmarkedProducts,
       {
         id: Date.now(),
         name: products.product.product_name,
@@ -27,8 +27,8 @@ export default function Product({ products, recipes, setRecipeIngredient, setPos
     ];
     // CHECK IF ALREADY SAVED
     let duplicateCount = 0;
-    if (currentProducts.length >= 1) {
-      currentProducts.forEach((product) => {
+    if (bookmarkedProducts.length >= 1) {
+      bookmarkedProducts.forEach((product) => {
         if (product.name === products.product.product_name) {
           alert('This product is already saved');
           duplicateCount++;
@@ -36,10 +36,9 @@ export default function Product({ products, recipes, setRecipeIngredient, setPos
       });
     }
     if (!duplicateCount) {
-      setCurrentProducts(newCurrentProducts);
+      setBookmarkedProducts(newBookmarkedProducts);
       alert('Item has been saved to your list');
     }
-
     Vibration.vibrate(100);
   };
 
@@ -50,8 +49,8 @@ export default function Product({ products, recipes, setRecipeIngredient, setPos
         {
           text: 'Yes',
           onPress: () => {
-            const newCurrentProducts = currentProducts.filter((item) => item.id !== id);
-            setCurrentProducts(newCurrentProducts);
+            const newBookmarkedProducts = bookmarkedProducts.filter((item) => item.id !== id);
+            setBookmarkedProducts(newBookmarkedProducts);
           },
         },
         { text: 'No' },
@@ -67,17 +66,17 @@ export default function Product({ products, recipes, setRecipeIngredient, setPos
   const getLocalStorage = () => {
     AsyncStorage.getItem('items')
       .then((response) => JSON.parse(response || '[]'))
-      .then((data) => setCurrentProducts(data));
+      .then((data) => setBookmarkedProducts(data));
   };
 
   // localstorage saving
   const saveLocalStorage = () => {
-    AsyncStorage.setItem('items', JSON.stringify(currentProducts));
+    AsyncStorage.setItem('items', JSON.stringify(bookmarkedProducts));
   };
 
   useEffect(() => {
     saveLocalStorage();
-  }, [currentProducts]);
+  }, [bookmarkedProducts]);
 
   if (pageChange) {
     return (
@@ -163,7 +162,7 @@ export default function Product({ products, recipes, setRecipeIngredient, setPos
     return (
       <SavedProducts
         setPageChange={setPageChange}
-        storedItems={currentProducts}
+        storedItems={bookmarkedProducts}
         deleteHandler={deleteHandler}
       />
     );
