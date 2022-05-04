@@ -12,7 +12,7 @@ export default function Product({ products, recipes, setRecipeIngredient, setPos
 
   const [showRecipePage, setShowRecipePage] = useState(false);
 
-  // A D D   B U T T O N   H A N D L E R
+  // ========== A D D   B U T T O N   H A N D L E R
   const saveItemHandler = () => {
     // console.log('products.jsx =>', products);
     const newBookmarkedProducts = [
@@ -25,7 +25,7 @@ export default function Product({ products, recipes, setRecipeIngredient, setPos
         keywords: products.product._keywords,
       },
     ];
-    // CHECK IF ALREADY SAVED
+    // ========== CHECK IF ALREADY SAVED
     let duplicateCount = 0;
     if (bookmarkedProducts.length >= 1) {
       bookmarkedProducts.forEach((product) => {
@@ -42,7 +42,7 @@ export default function Product({ products, recipes, setRecipeIngredient, setPos
     Vibration.vibrate(100);
   };
 
-  // D E L E T E   B U T T O N   H A N D L E R
+  // ========== D E L E T E   B U T T O N   H A N D L E R
   const deleteHandler = (id) => {
     return () => {
       Alert.alert('Removing Item !', 'Are you sure you want to remove this item?', [
@@ -212,6 +212,9 @@ const styles = StyleSheet.create({
   name_scoreContainer: {
     width: '50%',
     justifyContent: 'space-evenly',
+  },
+  noScoreMessage: {
+    color: 'brown',
   },
   recipeButton: {
     color: 'white',

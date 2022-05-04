@@ -3,6 +3,7 @@ import { BarCodeScanner } from 'expo-barcode-scanner';
 import React, { useState, useEffect } from 'react';
 import Product from './pages/Product';
 import { BASE_URL, filterArray } from './services/Service';
+import SavedProducts from './pages/SavedProducts';
 
 export default function App() {
   const [hasPermission, setHasPermission] = useState(null);
@@ -12,6 +13,9 @@ export default function App() {
 
   const [possibleRecipes, setPossibleRecipes] = useState([]);
   const [recipeIngredient, setRecipeIngredient] = useState([]);
+
+  // // bookmark handler
+  // const [pageChange, setPageChange] = useState(true);
 
   useEffect(() => {
     let isMounted = true;
@@ -109,9 +113,22 @@ export default function App() {
   if (hasPermission === null) return <Text>Requesting for camera permission</Text>;
   if (hasPermission === false) return <Text>No permission</Text>;
 
+  // if (pageChange === false) return <SavedProducts />;
+  // else
   return (
     <View style={styles.container}>
       {scanned || (
+        // <>
+        //   {/* bookmark link */}
+        //   <TouchableOpacity
+        //     style={styles.bookmarkLink}
+        //     onPress={() => {
+        //       setPageChange(false);
+        //       Vibration.vibrate(50);
+        //     }}
+        //   >
+        //     <Text style={{ color: 'grey' }}>Bookmarked Items</Text>
+        //   </TouchableOpacity>
         <BarCodeScanner
           onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
           style={(StyleSheet.absoluteFillObject, styles.camera)}
@@ -124,6 +141,7 @@ export default function App() {
           </View>
           <View style={styles.layerBottom} />
         </BarCodeScanner>
+        // </>
       )}
 
       {/* if the product is not found */}
@@ -159,7 +177,21 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
   },
-
+  // bookmarkLink: {
+  //   zIndex: 10,
+  //   elevation: 10,
+  //   position: 'absolute',
+  //   top: '13.5%',
+  //   right: -30,
+  //   transform: [{ rotate: '45deg' }],
+  //   borderColor: 'grey',
+  //   borderBottomWidth: 1,
+  //   borderRightWidth: 1,
+  //   paddingHorizontal: 5,
+  //   backgroundColor: '#dee3e0',
+  //   marginRight: 10,
+  //   borderRadius: 20,
+  // },
   button: {
     backgroundColor: '#00b894',
     paddingHorizontal: 10,
@@ -169,7 +201,6 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     marginTop: 20,
   },
-
   noProduct: {
     backgroundColor: 'teal',
     color: 'white',
@@ -178,8 +209,6 @@ const styles = StyleSheet.create({
     marginTop: 100,
   },
   camera: {
-    // flex: 1,
-    // flexDirection: 'column',
     height: '100%',
     width: '100%',
   },
