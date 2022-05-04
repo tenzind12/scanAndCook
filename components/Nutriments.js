@@ -57,12 +57,12 @@ export default function Nutriments({ nutriments }) {
 const styles = StyleSheet.create({
   nutrimentsContainer: {
     marginHorizontal: 10,
-    borderColor: '#ddd',
-    borderWidth: 0.5,
-    borderRadius: 5,
+    // borderColor: '#ddd',
+    // borderWidth: 0.5,
+    // borderRadius: 5,
     padding: 10,
     marginTop: 10,
-    backgroundColor: '#f5f5f5',
+    // backgroundColor: '#f5f5f5',
   },
   nutriment: {
     flexDirection: 'row',

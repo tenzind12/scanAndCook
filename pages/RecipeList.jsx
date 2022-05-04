@@ -11,9 +11,7 @@ export default function RecipeList({ recipes }) {
           <Text
             style={styles.recipesList}
             onPress={() =>
-              Linking.openURL(
-                `${BASE_URL}recipe-php/recipeLists.php?ingredient=${item}&submit=Submit`
-              )
+              Linking.openURL(`${BASE_URL}/recipeLists.php?ingredient=${item}&submit=Submit`)
             }
           >
             {item}

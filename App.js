@@ -46,9 +46,7 @@ export default function App() {
 
         // F I R S T   I N G R E D I E N T
         if (recipeIngredient.length <= 0) {
-          const recipeResponse = await fetch(
-            `${BASE_URL}recipe-php/api/v1/index.php?request=products`
-          );
+          const recipeResponse = await fetch(`${BASE_URL}/api/v1/index.php?request=products`);
           const recipeResBody = await recipeResponse.json();
 
           // extract recipes found by matching keywords from scanApp and ingredients in recipe fetched

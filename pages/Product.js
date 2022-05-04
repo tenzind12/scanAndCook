@@ -90,7 +90,7 @@ export default function Product({ products, recipes, setRecipeIngredient, setPos
               Vibration.vibrate(50);
             }}
           >
-            <Text>Bookmarked Items</Text>
+            <Text style={{ color: 'grey' }}>Bookmarked Items</Text>
           </TouchableOpacity>
 
           <View style={styles.imageContainer}>
@@ -135,11 +135,11 @@ export default function Product({ products, recipes, setRecipeIngredient, setPos
                   Vibration.vibrate(50);
                 }}
               >
-                <Text style={styles.recipeResetButton}>Reset</Text>
+                <Text style={styles.recipeResetButton}>Reset Result</Text>
               </TouchableOpacity>
             </View>
             <TouchableOpacity style={styles.bookmarkBtn} onPress={saveItemHandler}>
-              <Text style={{ color: 'white' }}>Save</Text>
+              <Text style={{ color: 'white' }}>★ Save</Text>
             </TouchableOpacity>
           </View>
 
@@ -175,9 +175,13 @@ const styles = StyleSheet.create({
   },
   listBtn: {
     alignSelf: 'flex-end',
-    borderBottomColor: 'grey',
+    borderColor: 'grey',
     borderBottomWidth: 1,
+    borderRightWidth: 1,
+    paddingHorizontal: 5,
+    backgroundColor: '#dee3e0',
     marginRight: 10,
+    borderRadius: 20,
   },
   imageContainer: {
     flexDirection: 'row',
@@ -187,14 +191,12 @@ const styles = StyleSheet.create({
     shadowRadius: 2,
     elevation: 1,
     marginTop: 30,
-    marginBottom: 10,
+    marginBottom: 50,
     marginHorizontal: 10,
     paddingVertical: 20,
     paddingHorizontal: 10,
-    backgroundColor: '#f5f5f5',
-    borderRadius: 7,
-    borderWidth: 1,
-    borderColor: '#ddd',
+    backgroundColor: '#283f42',
+    borderRadius: 3,
   },
   image: {
     height: 150,
@@ -204,7 +206,8 @@ const styles = StyleSheet.create({
   },
   name: {
     fontSize: 20,
-    color: '#303331',
+    fontWeight: 'bold',
+    color: '#ababab',
   },
   name_scoreContainer: {
     width: '50%',

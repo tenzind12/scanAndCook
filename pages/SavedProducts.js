@@ -75,9 +75,7 @@ export default function SavedProducts({ setPageChange, storedItems, deleteHandle
     // F I R S T   I N G R E D I E N T
     if (recipes.length <= 0) {
       const fetchRecipes = async () => {
-        const recipesResponse = await fetch(
-          `${BASE_URL}recipe-php/api/v1/index.php?request=products`
-        );
+        const recipesResponse = await fetch(`${BASE_URL}/api/v1/index.php?request=products`);
         const responseData = await recipesResponse.json();
         const allRecipes = responseData.data;
 
