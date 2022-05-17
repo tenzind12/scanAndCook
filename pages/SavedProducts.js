@@ -14,18 +14,13 @@ import RecipeList from './RecipeList';
 
 export default function SavedProducts({ setPageChange, storedItems, deleteHandler }) {
   const [keywords, setKeywords] = useState([]); // recipes keywords recieved from 'add' Button
-  const [isAdded, setIsAdded] = useState([]); // ingredients object stored in array
+  const [isAdded, setIsAdded] = useState([]); // array ingredient object to search for recipes available on https://recipie.tenzin.eu
 
   const [currentAddedIndex, setCurrentAddedIndex] = useState([]); // state storing index to update the container color when added to ingredient
 
   const [recipes, setRecipes] = useState([]); // state to store all recipes extracted with keywords
   const [recipeNames, setRecipeNames] = useState([]); // recipe names to pass to recipeList.js
   const [showRecipeList, setShowRecipeList] = useState(false);
-
-  // test
-  // useEffect(() => {
-  //   console.log(isAdded);
-  // }, [isAdded]);
 
   // B A C K   H A N D L E R
   const backBtnHandler = () => {
@@ -72,7 +67,7 @@ export default function SavedProducts({ setPageChange, storedItems, deleteHandle
 
   // FUNCTION TO FETCH RECIPES
   useEffect(() => {
-    // F I R S T   I N G R E D I E N T
+    // F I R S T   I N G R E D I E N T (when recipes array is empty)
     if (recipes.length <= 0) {
       const fetchRecipes = async () => {
         const recipesResponse = await fetch(`${BASE_URL}/api/v1/index.php?request=products`);

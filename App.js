@@ -17,6 +17,7 @@ export default function App() {
   // // bookmark handler
   // const [pageChange, setPageChange] = useState(true);
 
+  // clean up function
   useEffect(() => {
     let isMounted = true;
     (async () => {
@@ -34,6 +35,7 @@ export default function App() {
     try {
       const response = await fetch(`https://world.openfoodfacts.org/api/v0/product/${data}.json`);
       const responseBody = await response.json();
+      // console.log(responseBody);
       responseBody.status === 0
         ? setErrorMessage("We don't rate this type of product")
         : setProducts(responseBody);
