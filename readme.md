@@ -8,7 +8,4 @@
 
 ## OR
 
-[Download the apk file here](https://drive.google.com/file/d/1jIVyAnPWYRtgyBqVKS1jT84s2RvpLLU5/view?usp=sharing)
-
-![first screenshot](https://github.com/tenzind12/few_react_projects/blob/productScanner/assets/screenshot1.jpg?raw=true)  
-![second screenshot](https://github.com/tenzind12/few_react_projects/blob/productScanner/assets/screenshot2.jpg?raw=true)
+[Download the apk file here](https://drive.google.com/file/d/1dxSM179CCZJzF4Xiow8Nwo9u_g8wexwV/view?usp=sharing)
