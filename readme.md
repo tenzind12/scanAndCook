@@ -6,9 +6,10 @@
 4. localhost:19002
 5. run in webBrowser or in mobile with expo app
 
-## OR
+## OR <a href="https://drive.google.com/file/d/10DIVtroPepUew4FJeROo3N7KHApXTJ_a/view?usp=sharing">
 
-[Download the apk file here](https://drive.google.com/file/d/1dxSM179CCZJzF4Xiow8Nwo9u_g8wexwV/view?usp=sharing)
+![Android](https://img.shields.io/badge/ScanAndCook.apk-32b86d?style=for-the-badge&logo=android&logoColor=white)
+</a>
 
-<img align="left"  height="500" src="https://github.com/tenzind12/Foodproduct_scanner/blob/master/assets/screenshots/app.png">
-<img align="center"  height="500" src="https://github.com/tenzind12/Foodproduct_scanner/blob/master/assets/screenshots/app2.png">
+<img height="500" src="https://github.com/tenzind12/Foodproduct_scanner/blob/master/assets/screenshots/app.png">  
+<img height="500" src="https://github.com/tenzind12/Foodproduct_scanner/blob/master/assets/screenshots/app2.png">
