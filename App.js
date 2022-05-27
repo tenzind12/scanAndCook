@@ -3,11 +3,11 @@ import { BarCodeScanner } from 'expo-barcode-scanner';
 import React, { useState, useEffect } from 'react';
 import Product from './pages/Product';
 import { BASE_URL, filterArray } from './services/Service';
-import SavedProducts from './pages/SavedProducts';
 
 export default function App() {
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
+
   const [products, setProducts] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
 
@@ -35,7 +35,7 @@ export default function App() {
     try {
       const response = await fetch(`https://world.openfoodfacts.org/api/v0/product/${data}.json`);
       const responseBody = await response.json();
-      // console.log(responseBody);
+      // console.log(responseBody.status);
       responseBody.status === 0
         ? setErrorMessage("We don't rate this type of product")
         : setProducts(responseBody);
@@ -44,6 +44,7 @@ export default function App() {
        * FOLLOWING CODES TO FETCH POSSIBLE RECIPES FROM (recipe-php site) *
        */ //=============================================================== //
       if (responseBody.status) {
+        // remove all words that are in the filter array
         const productKeywords = responseBody.product._keywords.filter(
           (word) => filterArray.indexOf(word) === -1
         );
@@ -115,22 +116,11 @@ export default function App() {
   if (hasPermission === null) return <Text>Requesting for camera permission</Text>;
   if (hasPermission === false) return <Text>No permission</Text>;
 
-  // if (pageChange === false) return <SavedProducts />;
   // else
   return (
     <View style={styles.container}>
+      {/* if not yet scanned, execute the BarcodeScanner Component */}
       {scanned || (
-        // <>
-        //   {/* bookmark link */}
-        //   <TouchableOpacity
-        //     style={styles.bookmarkLink}
-        //     onPress={() => {
-        //       setPageChange(false);
-        //       Vibration.vibrate(50);
-        //     }}
-        //   >
-        //     <Text style={{ color: 'grey' }}>Bookmarked Items</Text>
-        //   </TouchableOpacity>
         <BarCodeScanner
           onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
           style={(StyleSheet.absoluteFillObject, styles.camera)}
@@ -143,7 +133,6 @@ export default function App() {
           </View>
           <View style={styles.layerBottom} />
         </BarCodeScanner>
-        // </>
       )}
 
       {/* if the product is not found */}
@@ -179,21 +168,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
   },
-  // bookmarkLink: {
-  //   zIndex: 10,
-  //   elevation: 10,
-  //   position: 'absolute',
-  //   top: '13.5%',
-  //   right: -30,
-  //   transform: [{ rotate: '45deg' }],
-  //   borderColor: 'grey',
-  //   borderBottomWidth: 1,
-  //   borderRightWidth: 1,
-  //   paddingHorizontal: 5,
-  //   backgroundColor: '#dee3e0',
-  //   marginRight: 10,
-  //   borderRadius: 20,
-  // },
   button: {
     backgroundColor: '#00b894',
     paddingHorizontal: 10,
